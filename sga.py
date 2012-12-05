@@ -34,7 +34,7 @@ class SGA(object):
         l = population + childs
         weighted_childs = sorted([(evaluate(self.instance, elem), elem) for elem in childs])
         weighted = sorted([(evaluate(self.instance, elem), elem) for elem in l])
-        new_population = weighted[:len(population)]
+        new_population = weighted[len(childs):]
         return map((lambda (w, e): e), new_population)   
 
     def evaluate_population(self, population):

@@ -10,8 +10,9 @@ class SGA(object):
         self.best = None
         self.log = ([], [])
 
-    def go(self, size, iterations, param_c, param_m):
+    def go(self, size, iterations, M, param_c, param_m):
         self.size = size
+        self.M = M
         population = self.random_population(size)
         self.evaluate_population(population)
         for i in xrange(iterations):
@@ -19,15 +20,27 @@ class SGA(object):
             ps = self.crossover(population, param_c)
             if not ps:
                 break
-            population = self.mutation(ps, param_m)
+            childs = self.mutation(ps, param_m)
+            population = self.replacement(population, childs)
+#            population = childs
+            print population[0]
+            print evaluate(self.instance, population[0])
             self.evaluate_population(population)
 
         print evaluate(instance, self.best[1], True), 
         return self.log
 
+    def replacement(self, population, childs):
+        l = population + childs
+        weighted_childs = sorted([(evaluate(self.instance, elem), elem) for elem in childs])
+        weighted = sorted([(evaluate(self.instance, elem), elem) for elem in l])
+        new_population = weighted[:len(population)]
+        return map((lambda (w, e): e), new_population)   
+
     def evaluate_population(self, population):
         weighted = sorted([(evaluate(self.instance, elem), elem) for elem in population])
         if not self.best or self.best[0] < weighted[0][0]:
+            print self.best
             if self.best:
                 print "improved from %d to %d (iter %d)" % (self.best[0], weighted[0][0], self.i)
                 print "current best = ", evaluate(instance, self.best[1], True)
@@ -80,11 +93,10 @@ class SGA(object):
             roulette.append((s, x))
         
         np = []
-        while len(np) < self.size:
+        while len(np) < self.M:
             parents = []
             while len(parents) < 2:
                 parents.append(self.lower_bound(roulette))
-            
             if random.uniform(0, 1) < param_c:
                 c1, c2 = self.pmx(parents[0], parents[1])
             else:
@@ -164,7 +176,7 @@ if __name__ == '__main__':
         sga = SGA(instance)
         # params:
         # population size, iterations, crossover chance, mutation chance
-        sga.go(1000, 1000, 0.99, 0.03)
+        sga.go(1000, 1000, 100, 0.9, 0.1)
 
 #from matplotlib import pyplot as plt
 #def plot(data, title, file):

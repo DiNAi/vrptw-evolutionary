@@ -31,7 +31,7 @@ def evaluate(instance, solution, verbose=False):
     if verbose:
         return violations, cost
     else:
-        return -cost * (1 + violations * 10) ** 2
+        return cost + violations * 1000
 
 def test():
     instance = read_instance('instances/rc_201.1.txt')

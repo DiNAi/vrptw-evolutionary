@@ -1,0 +1,24 @@
+\begin{frame}
+        \begin{block}{Funkcja celu}
+                Jeśli przez $t_i$ oznaczymy czas dotarcia do wierzchołka $v_i$ to rozwiązanie możemy ocenić za pomocą funkcji celu której interpretacja to suma kar jakie ponieśliśmy:
+\begin{equation}
+        f = \sum\limits_{i=2}^{n} m_i
+\end{equation}
+\begin{equation}
+m_i = \text{if} \ t_i > d_i \ \text{then} \ k_i \ \text{else} \ 0
+\end{equation}
+        \end{block}
+\end{frame}
+
+\begin{frame}
+Warianty problemu:
+\begin{itemize}
+\item ograniczenia na \textbf{limit pojemności} pojazdu wymuszający odwiedzanie magazynu,
+\item \textbf{okna dostawy} (najpóźniejszy jak i najwcześniejszy czas dostawy),
+\item minimalizacja \textbf{liczby błędów} zamiast minimalizacji funkcji kary.
+\end{itemize}
+\begin{block}{Ocena}
+    W drugim przypadku oceną rozwiązania jest krotka (liczba błędów, długość przejazdu) i wyniki sortujemy leksykograficznie, tj. w pierwszej kolejności minimalizujemy liczbę przekroczonych terminów, a dopiero potem długość trasy.
+\end{block}
+
+\end{frame}

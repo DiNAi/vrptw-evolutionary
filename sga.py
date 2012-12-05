@@ -22,9 +22,8 @@ class SGA(object):
                 break
             childs = self.mutation(ps, param_m)
             population = self.replacement(population, childs)
-#            population = childs
-            print population[0]
-            print evaluate(self.instance, population[0])
+            #print population[0]
+            #print evaluate(self.instance, population[0])
             self.evaluate_population(population)
 
         print evaluate(instance, self.best[1], True), 
@@ -32,7 +31,6 @@ class SGA(object):
 
     def replacement(self, population, childs):
         l = population + childs
-        weighted_childs = sorted([(evaluate(self.instance, elem), elem) for elem in childs])
         weighted = sorted([(evaluate(self.instance, elem), elem) for elem in l])
         new_population = weighted[len(childs):]
         return map((lambda (w, e): e), new_population)   

@@ -26,12 +26,14 @@ def evaluate(instance, solution, verbose=False):
         makespan = max(makespan + distances[current][node], windows[node][0])
         if makespan > windows[node][1]:
             violations += 1
+            if not verbose: cost += makespan - windows[node][1]
         current = node
 
     if verbose:
         return violations, cost
     else:
-        return -(cost + violations * 1000)
+        return -cost
+        #return -(cost + violations * 1000)
 
 def test():
     instance = read_instance('instances/rc_201.1.txt')

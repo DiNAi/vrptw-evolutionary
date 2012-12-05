@@ -1,0 +1,44 @@
+\begin{frame}
+	\begin{block}{Opis problemu (orginalny)}
+		Mamy dany ważony graf pełny miast z magazynem (punktem startowym). Wagi na krawędziach interpretujemy jako czasy potrzebne na przemieszczenie sie między miastami. Dodatkowo każdy wierzchołek ma przypisany najpóźniejszy czas dostawy za przekroczenie którego otrzymujemy karę. 
+		Ciężarówka ma nieskończoną pojemność wiec raz załadowana może jeździć dowolnie długo.
+		Znamy również maksymalny czas podróży ciężarówki po jakim żadne zadanie nie jest dopuszczalne.
+		Należny znaleść ciag miast, taki że każde miasto jest odwiedzone i suma kar jest minimalna.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Instancja problemu}
+		Miastom przyporządkowujmey kolejno numery $2, \cdots, n$.
+		Dla uproszczenia będziemy zakładać, że magazyn zawsze ma numer $1$.
+		Instancją problemu jest trójka:
+		\begin{equation}
+			P = \left< T, K, D\right>
+		\end{equation}
+	\end{block}
+	\begin{block}{Macierz czasu przejazdów}		
+		\begin{equation}
+			T = \left[ t_{ij} \right]_{n \times n} 
+		\end{equation}
+		Kwadratowa maciarz gdzie element $t_{ij}$ to czas potrzebny na przejazd z miasta $i$ do $j$.
+	\end{block}
+	\begin{block}{K i D}
+		Wektory K i D przyporządkowują wierzchołkom odpowiednio najpóźniejsze czasy dostawy oraz karę za ich przekroczenie.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Rozwiązania dopuszczalne}
+		Rozwiązaniem dopuszczalnym (spełniającym warunki zadania) jest permutacja liczb $1, \cdots, n$.
+	\end{block}
+
+	\begin{block}{Uzasadnienie}
+		\begin{itemize}
+			\item W rozwiązniu musza znaleść sie wszystkie miasta. (definicja problemu)
+			\item W rozwiązaniu miasta nie mogą sie powtarzać. (nierówność trójkąta
+				+ założenie o nieskończonej ładowności ciężarówki)
+			\item W rozwiązaniu magazyn musi być pierwszym wierzchołkiem.
+		\end{itemize}
+	\end{block}
+\end{frame}
+

@@ -1,0 +1,61 @@
+\begin{frame}{Algorytm konstrukcyjny}
+	
+	\begin{block}{Opis algorytmu konstrukcyjnego}
+		Algorytm konstrukcyjny oparliśmy na podstawie algorytmu Local Search. 
+		Ssąsiądów wybieramy wykorzystując wszystkie możliwe transpozycje.
+		
+	\end{block}
+
+	\begin{block}{Local Search}
+		\begin{algorithm}[H]
+			\KwData{$x$ -- initial node}
+			
+			\KwResult{$best\_neighbour$ -- the best local node}
+			$current = none$ \\
+			$best\_neighbor = x$ \\
+			\Repeat{$F(best_neighbour) = = F(current)$}{
+				$current = best\_neighbour$
+				$neighbours = $ find all neighbours of $current$
+				$best\_neighbour = $ select best from $neighbours \cup \left\{current\right\}$				
+			}
+			\Return $best\_neighbour$
+		\end{algorithm}
+	\end{block}
+
+\end{frame}
+
+\begin{frame}{Algorytm konstrukcyjny}
+
+	\begin{block}{Neighbors}
+		\begin{algorithm}[H]
+			\KwData{x -- current node}
+			\KwResult{neighbours -- set of x's neighbours}
+			$ neighbours = \empty $ \\
+			\ForAll{$1 \leq i, j \leq n \ \wedge i < j$}{
+				$neighbours \cup= x_1 \cdots x_{i-1}, x_j, x_{i+1} \cdots x_{j-1}, x_i, x_{j+1} \cdots x_n$
+			}
+			\Return neighbours
+		\end{algorithm}
+	\end{block}
+
+\end{frame}
+
+\begin{frame}{Algorytm konstrukcyjny}
+
+	\begin{block}{Algorytm konstrykcyjny dla problemu dystrybucji towarów}
+
+		\begin{algorithm}[H]
+			\KwData{$T, p, t_{max}, x$ -- initial node}
+			\KwResult{$best\_neighbor$ -- best local neighbour}
+			$ current = none $ \\
+			$ best\_neighbor = x $ \\
+			\Repeat{$F(best_neighbour) = = F(current)$}{
+				$current = best\_neighbor$
+				$neighbours = Neighbours(x) \cup \left\{current\right\}$
+				$best\_neighbour =  $ select best from $neighbours$
+			}
+			\Return $best\_neighbor$
+		\end{algorithm}
+	\end{block}
+
+\end{frame}

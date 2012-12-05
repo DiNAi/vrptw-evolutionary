@@ -1,0 +1,15 @@
+\begin{block}{Nierówność trójkąta}
+	\begin{equation}
+		a < b + c \ \wedge \ b < a + c \ \wedge \ c < a + b
+	\end{equation}
+	\begin{itemize}
+		\item Zakładamy, że dany czas przejazdu między dowolnymi dwoma miastami to średni czas potrzebny na pokonanie najszybszej trasy łączącej te dwa miasta.
+		\item Dzięki temu założeniu graf dla miast spełnia nierówność trójkąta czyli:
+			\begin{equation}
+				\forall_{a,b,c \in V} t(\left\{a, c\right\}) < t(\left\{a, b\right\}) + t(\left\{b, c\right\})
+			\end{equation}
+		\item Eleminujemy możliwość rozwiązania gdzie miasta mogą sie powtarzać, jeżeli mamy dostarczyć towar do miasta $b$, a znajdujemy sie w mieścia $a$ to najszybsza droga między tymi miastami zajmuje $t(\left\{a, b\right\})$.
+	\end{itemize}
+
+	
+\end{block}

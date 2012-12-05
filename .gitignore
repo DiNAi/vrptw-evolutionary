@@ -1,0 +1,12 @@
+*.swp
+*.pyc
+*.git
+*.aux
+*.log
+*.dvi
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.vrb

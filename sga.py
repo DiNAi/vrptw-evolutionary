@@ -34,14 +34,17 @@ class SGA(object):
         print evaluate(instance, self.best[1], True), 
         return self.log
 
+    def get_weighted(self, population):
+        return sorted([(evaluate(self.instance, elem), elem) for elem in population]) 
+
     def replacement(self, population, childs):
         l = population + childs
-        weighted = sorted([(evaluate(self.instance, elem), elem) for elem in l])
+        weighted = self.get_weighted(l)
         new_population = weighted[len(childs):]
         return map((lambda (w, e): e), new_population)   
 
     def evaluate_population(self, population):
-        weighted = sorted([(evaluate(self.instance, elem), elem) for elem in population])
+        weighted = self.get_weighted(population)
         self.log[0].append(self.i)
         self.log[1].append(abs(weighted[0][0]))
         #print len(set([w for w, x in weighted])) # prints number of unique elements in population

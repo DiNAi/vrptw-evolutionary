@@ -1,5 +1,7 @@
 #-*- coding:utf-8 -*-
 import sys
+import math
+from plot import plot
 import random
 from problem import read_instance, evaluate
 
@@ -8,14 +10,17 @@ class SGA(object):
     def __init__(self, instance):
         self.instance = instance # (size, distances[][], time windows[][])
         self.best = None
+        self.i = 0
         self.log = ([], [])
 
     def go(self, size, iterations, M, param_c, param_m):
         self.size = size
         self.M = M
+        self.T = 100000.
+        self.Tn = 0.48
         population = self.random_population(size)
         self.evaluate_population(population)
-        for i in xrange(iterations):
+        for i in xrange(1, iterations):
             self.i = i
             ps = self.crossover(population, param_c)
             if not ps:
@@ -37,14 +42,18 @@ class SGA(object):
 
     def evaluate_population(self, population):
         weighted = sorted([(evaluate(self.instance, elem), elem) for elem in population])
+        self.log[0].append(self.i)
+        self.log[1].append(abs(weighted[0][0]))
+        #print len(set([w for w, x in weighted])) # prints number of unique elements in population
         if not self.best or self.best[0] < weighted[0][0]:
-            print self.best
+            #print self.best
             if self.best:
-                print "improved from %d to %d (iter %d)" % (self.best[0], weighted[0][0], self.i)
-                print "current best = ", evaluate(instance, self.best[1], True)
-                self.log[0].append(self.i)
-                self.log[1].append(abs(weighted[0][0]))
+                print "improved from %d to %d (iter %d, T=%f)" % (self.best[0], weighted[0][0], self.i, self.T)
+                #print "current best = ", evaluate(instance, self.best[1], True)
+                #self.log[0].append(self.i)
+                #self.log[1].append(abs(weighted[0][0]))
             self.best = weighted[0]
+        self.T = self.T * self.Tn
     
     def random_population(self, k):
         population = []
@@ -74,6 +83,10 @@ class SGA(object):
          
     def crossover(self, population, param_c):
         weighted = [(evaluate(instance, elem), elem) for elem in population]
+
+        # exponential scaling
+        #results = [(math.exp(w / self.T), x) for (w, x) in weighted]
+
         min_f = min([w for (w, x) in weighted])
         sum_f = 0.
         for w in weighted:
@@ -171,32 +184,18 @@ if __name__ == '__main__':
         exit(1)
     else:
         instance = read_instance(sys.argv[1])
-        sga = SGA(instance)
-        # params:
+        # go() params:
         # population size, iterations, crossover chance, mutation chance
-        sga.go(1000, 1000, 100, 0.9, 0.1)
-
-#from matplotlib import pyplot as plt
-#def plot(data, title, file):
-    #plt.clf()
-
-    #plt.ylabel('Score')
-    #plt.xlabel('Iteration')
-
-    #for line in data:
-        #plt.plot(line[0], line[1])
-
-    #plt.title(title)
-
-    #plt.savefig(file)
-    #print 'saved to %s' % file
-#def test_sga():
-    #logs = []
-    #for i in xrange(10):
-        #s = SGA(N, L, T)
-        #logs.append(s.go(100, 0, 0))
-    #return logs
-# plot(test_sga(), 'SGA + PMX + Swap & Shift Mutations', 'out.png')
+        results = []
+        iters = 1 if len(sys.argv) == 2 else 5
+        for i in xrange(iters):
+            sga = SGA(instance)
+            logs = sga.go(1000, 2000, 200, 0.8, 0.08)
+            results.append(logs)
+        if len(sys.argv) > 2:
+            inst = sys.argv[1].split('/')[-1]
+            plot(results, 'SGA + PMX + Swap & Shift Mutations (instance: %s)'
+                 % (inst), '%s_%s' % (inst, sys.argv[2]))
 
 # TODO's:
 # spowolnic przeszukiwanie

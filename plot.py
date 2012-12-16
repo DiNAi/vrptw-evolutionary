@@ -10,6 +10,8 @@ def plot(data, title, file):
         plt.plot(line[0], line[1])
 
     plt.title(title)
+#    plt.yscale('log')
 
     plt.savefig(file)
+    
     print 'Graph output saved to %s' % file

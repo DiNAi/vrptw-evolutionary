@@ -106,14 +106,14 @@ class SGA(object):
         weighted = self.get_weighted(population) 
 
         # exponential scaling
-        results = [(math.exp(w / self.T), x) for (w, x) in weighted]
+        # results = [(math.exp(w / self.T), x) for (w, x) in weighted]
 
         sum_f, min_f = self.sum_f(weighted)
 
         if sum_f == 0.0:
-            print "Population has 1 unique element"
-            return population #[]
-        #results = [((w-min_f)/sum_f, x) for (w, x) in weighted]
+            print "Population has 1 unique element (iter: %s)" % (self.i)
+            return population # []
+        results = [((w-min_f)/sum_f, x) for (w, x) in weighted]
         
         #temp = max(((sum_f - (self.i*10)**2))**3+1, 1) #10000000/(sum_f)             
         #if self.i > self.iterations * 0.8:
@@ -189,8 +189,16 @@ class SGA(object):
     def mutation_probability(self, population):
         weighted = self.get_weighted(population)
         min_f = weighted[-1][0] #min(map((lambda x: abs(x[0])), weighted))
-        max_f = weighted[0][0] #max(map((lambda x: abs(x[0])), weighted))
-        return (min_f / max_f)**4
+        k = 1
+        k_best = 0        
+        for i in xrange(1, len(weighted)):
+            if weighted[i][0] == weighted[i-1][0]:
+                k += 1
+            else:
+                k_best = max(k, k_best)
+                k = 0
+        k_best = max(k, k_best)
+        return (k_best / len(weighted)) ** 4
 
     def swap_mutation(self, x):
         n = len(x)
@@ -206,7 +214,7 @@ class SGA(object):
         results = []
         p_m = self.mutation_probability(population)
         for elem in population:            
-            if random.uniform(0, 1) < p_m: #param_m:  # small probability of mutation
+            if random.uniform(0, 1) < p_m * param_m:  # small probability of mutation
                 ta, tb = self.random_divide()
                 p = random.uniform(0, 1)
                 if p < 0.2:
@@ -234,7 +242,7 @@ if __name__ == '__main__':
         iters = 1 if len(sys.argv) == 2 else 5 
         for i in xrange(iters):
             sga = SGA(instance)
-            logs, logs_avg = sga.go(1000, 1000, 200, 0.8, 0.08)                      
+            logs, logs_avg = sga.go(2000, 1000, 400, 0.9, 0.8)                             
             results.append(logs)
             results_avg.append(logs_avg)
         if len(sys.argv) > 2:
